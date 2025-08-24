@@ -1,0 +1,7 @@
+br\log\LogJson.class
+br\log\LogJsonAdapter.class
+br\log\ILog.class
+br\log\LogCsv.class
+br\log\Log.class
+br\log\LogFactory.class
+br\log\LogCsvAdapter.class
