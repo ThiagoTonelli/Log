@@ -4,6 +4,8 @@
  */
 package br.log;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,15 +22,33 @@ public class LogCsvAdapter implements ILog {
     public LogCsvAdapter(String caminhoFicheiro) {
         this.logCsv = new LogCsv();
         this.caminhoFicheiro = caminhoFicheiro;
+        inicializarFicheiro();
+    }
+
+    private void inicializarFicheiro() {
+        try {
+            File ficheiro = new File(caminhoFicheiro);
+            
+            if (!ficheiro.exists()) {
+                if (ficheiro.getParentFile() != null) {
+                    ficheiro.getParentFile().mkdirs();
+                }
+                try (FileWriter writer = new FileWriter(ficheiro)) {
+                    writer.append("MENSAGEM_FORMATADA;USUARIO;DATA_HORA_ISO\n");
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao inicializar ficheiro de log CSV: " + e.getMessage(), e);
+        }
     }
 
     @Override
-    public void registrar(String operacao, String usuario, LocalDateTime dataHora) {
+    public void registrar(String mensagem, String usuario, LocalDateTime dataHora) {
         try {
             String[] dados = {
-                dataHora.format(formatter),
+                mensagem,
                 usuario,
-                operacao
+                dataHora.toString()
             };
             logCsv.escrever(caminhoFicheiro, dados);
         } catch (IOException e) {

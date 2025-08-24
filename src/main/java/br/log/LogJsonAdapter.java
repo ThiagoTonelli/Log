@@ -5,6 +5,7 @@
 package br.log;
 
 import com.google.gson.Gson;
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -23,8 +24,23 @@ public class LogJsonAdapter implements ILog {
         this.logJson = new LogJson();
         this.caminhoFicheiro = caminhoFicheiro;
         this.gson = new Gson(); 
+        inicializarFicheiro();
     }
-
+    
+    private void inicializarFicheiro() {
+        try {
+            File ficheiro = new File(caminhoFicheiro);
+            if (!ficheiro.exists()) {
+                if (ficheiro.getParentFile() != null) {
+                    ficheiro.getParentFile().mkdirs();
+                }
+                ficheiro.createNewFile(); 
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao inicializar ficheiro de log JSON: " + e.getMessage(), e);
+        }
+    }
+    
     @Override
     public void registrar(String operacao, String usuario, LocalDateTime dataHora) {
         try {
