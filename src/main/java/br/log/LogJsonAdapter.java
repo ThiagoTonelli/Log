@@ -42,13 +42,15 @@ public class LogJsonAdapter implements ILog {
     }
     
     @Override
-    public void registrar(String operacao, String usuario, LocalDateTime dataHora) {
+    public void registrar(String mensagem, String usuario, LocalDateTime dataHora, String id_c, String ciclo) {
         try {
             Map<String, String> logEntry = new HashMap<>();
-            logEntry.put("dataHora", dataHora.toString());
+            logEntry.put("id_c", id_c);
+            logEntry.put("ciclo", ciclo);
             logEntry.put("usuario", usuario);
-            logEntry.put("operacao", operacao);
-
+            logEntry.put("dataHora", dataHora.toString());
+            logEntry.put("mensagem", mensagem);
+            
             String jsonString = gson.toJson(logEntry);
 
             logJson.escrever(caminhoFicheiro, jsonString);

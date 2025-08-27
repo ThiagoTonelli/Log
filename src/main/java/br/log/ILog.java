@@ -11,5 +11,5 @@ import java.time.LocalDateTime;
  * @author thiag
  */
 public interface ILog {
-    void registrar(String operacao, String usuario, LocalDateTime dataHora);
+    public void registrar(String mensagem, String usuario, LocalDateTime dataHora, String id_c, String ciclo);
 }

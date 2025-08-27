@@ -43,12 +43,14 @@ public class LogCsvAdapter implements ILog {
     }
 
     @Override
-    public void registrar(String mensagem, String usuario, LocalDateTime dataHora) {
+    public void registrar(String mensagem, String usuario, LocalDateTime dataHora, String id_c, String ciclo) {
         try {
             String[] dados = {
-                mensagem,
+                id_c,
+                ciclo,
                 usuario,
-                dataHora.toString()
+                dataHora.toString(),
+                mensagem   
             };
             logCsv.escrever(caminhoFicheiro, dados);
         } catch (IOException e) {
